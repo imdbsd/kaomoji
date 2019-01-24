@@ -1,10 +1,10 @@
 {
     "data": [
         {
-            "category": "positive-emotions",
+            "category": "Positive Emotions",
             "sub": [
                 {
-                    "category": "joy",
+                    "category": "Joy",
                     "emojis": [
                         {
                             "emoji": "(* ^ &#x3c9; ^)",
@@ -311,10 +311,10 @@
             ]
         },
         {
-            "category": "animals",
+            "category": "Animals",
             "sub": [
                 {
-                    "category": "dog",
+                    "category": "Dog",
                     "emojis": [
                         {
                             "emoji": "&#x222a;&#xff3e;&#x30a7;&#xff3e;&#x222a;",
