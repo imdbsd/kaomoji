@@ -1,0 +1,12 @@
+.notification {
+  position: fixed !important;  
+  left: 10%;
+  right: 10%;
+  bottom: -80px;
+  transition: bottom .5s ease;
+}
+
+.notif__up {
+  bottom: 20px;
+  transition: bottom .5s ease;
+}

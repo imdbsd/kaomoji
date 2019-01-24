@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Header from './components/Header';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
+import CopyNotification from './components/CopyNotification';
 import FourZeroFour from './styles/404';
 
 import 'bulma/css/bulma.css';
@@ -14,6 +15,7 @@ class App extends Component {
     selected_category: ' - ',    
     page: 0,
     totalPage: 0,
+    showNotif: false,
     emojis: []
   }
 
@@ -82,7 +84,22 @@ class App extends Component {
     document.body.appendChild(hiddenInput);        
     hiddenInput.select();
     document.execCommand("copy");
-    document.body.removeChild(hiddenInput);      
+    document.body.removeChild(hiddenInput);   
+    this.setState({
+      showNotif: true
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          showNotif: false
+        })
+      }, 1500)
+    })   
+  }
+  
+  closeNotif = () => {
+    this.setState({
+      showNotif: false
+    })
   }
 
   componentDidMount() {
@@ -157,6 +174,9 @@ class App extends Component {
                   handlePagination={this.handlePagination}
                 />
           }
+          <CopyNotification 
+            showNotif={this.state.showNotif}
+          />
         </section>
       </Fragment>
     );
