@@ -11,7 +11,7 @@ import { getDatas, getAllData } from './data/provider';
 
 class App extends Component {
   state = {
-    selected_category: ' - ',
+    selected_category: ' - ',    
     page: 0,
     totalPage: 0,
     emojis: []
@@ -47,10 +47,6 @@ class App extends Component {
     })
   }
 
-  componentDidMount() {
-    console.log(kaomojis)
-  }
-
   getCategory = () => {
     const [parentCategory, subCategory] = this.state.selected_category.split("-");        
     return {
@@ -78,12 +74,27 @@ class App extends Component {
     }
   }
 
+  copyEmoji = emoji => {    
+    const hidden = document.createElement('textarea');
+    const hiddenInput = document.createElement('input');
+    hidden.innerHTML = emoji;
+    hiddenInput.setAttribute("value", hidden.innerHTML);
+    document.body.appendChild(hiddenInput);        
+    hiddenInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(hiddenInput);      
+  }
+
+  componentDidMount() {
+    console.log(kaomojis)
+  }
+
   render() {        
     return (
       <Fragment>
         <Header />
         <section className="section">
-          <form style={{ margin: '10px auto' }}>
+          <form style={{ margin: '10px auto' }}>            
             <div className="control">
               <div className="select is-primary" style={{ width: "100%" }}>
                 <select
@@ -128,9 +139,10 @@ class App extends Component {
             {
               this.state.emojis.length > 0 && this.state.emojis.slice((this.state.page * 6), (this.state.page * 6) + 6).map(emoji => {
                 return (
-                  <div className="column is-half">
+                  <div className="column is-half" key={emoji.emoji}>
                     <Card
-                      emoji={emoji}
+                      emoji={emoji}                      
+                      copyEmoji={this.copyEmoji}                   
                     />
                   </div>
                 )
