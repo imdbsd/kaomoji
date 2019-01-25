@@ -2,7 +2,7 @@
   position: fixed !important;  
   left: 10%;
   right: 10%;
-  bottom: -80px;
+  bottom: -150px;
   transition: bottom .5s ease;
 }
 

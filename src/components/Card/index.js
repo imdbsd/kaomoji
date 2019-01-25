@@ -3,7 +3,7 @@ import KaomojiButton from '../../styles/KaomojiButton';
 
 const Card = props => {
   const {emoji, source} = props.emoji
-  const { copyEmoji } = props;
+  const { copyEmoji, pinEmoji} = props;
   return(
     <div className="card">      
       <div className="card-content" style={{
@@ -17,6 +17,7 @@ const Card = props => {
       </div>      
       <footer className="card-footer">
         <a href="#" className="card-footer-item">detail</a>
+        <a href="#" className="card-footer-item" onClick={() => pinEmoji(props.emoji)}>pin</a>
       </footer>
     </div>
   )

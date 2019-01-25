@@ -1,9 +1,9 @@
 import React from 'react';
 
-const CopyNotification = ({showNotif}) => {
+const CopyNotification = ({showNotif, selectedEmoji}) => {
   return (
     <div class={`notification is-success ${showNotif? 'notif__up' : ''}`}>      
-      Coppied to clipboard
+      Coppied {selectedEmoji} to clipboard
     </div>
   )
 }
