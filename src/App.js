@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Header from './components/Header';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
-import CopyNotification from './components/CopyNotification';
+import {CopyNotification, AlertNotification} from './components/Notification';
 import Tabs from './components/Tabs';
 import FourZeroFour from './styles/404';
 
@@ -28,41 +28,50 @@ class App extends Component {
       [name]: value,
       page: 0,
     }, () => {
-      const { parentCategory, subCategory } = this.getCategory();
-      const { emojis } = this.state.filter === 'all' ? getDatas(parentCategory, subCategory) : getPinnedDatas(parentCategory, subCategory);
-      if (!emojis) {
-        return this.setState({
-          totalPage: 0,
-          emojis: []
-        })
-      }
-      let totalPage = 1;
-      //update pagination
-      const canDividedBySix = emojis.length % 6 === 0;
-      if (canDividedBySix) {
-        totalPage = emojis.length / 6;
-      }
-      else {
-        totalPage = parseInt(emojis.length / 6) + 1;
-      }
-      this.setState({
-        totalPage,
-        emojis
-      })
+      this.updateEmojis();
     })
   }
 
   changeFilter = filter => {
     if (this.state.filter !== filter) {
       console.log(!getAllPinned())
-      if (filter === 'pinned' && !getAllPinned()) {
-        return null;
-      }
+      if (filter === 'pinned') {
+        if(!getAllPinned()){
+          return null;
+        }        
+      }      
       this.setState({
         filter,
         selected_category: ' - '
+      }, () => this.updateEmojis())
+    }
+  }
+
+  updateEmojis = () => {
+    console.log("updateEMojis")
+    const { parentCategory, subCategory } = this.getCategory();
+    console.log({filter: this.state.filter})
+    const { emojis } = this.state.filter === 'all' ? getDatas(parentCategory, subCategory) : getPinnedDatas(parentCategory, subCategory);
+    console.log({emojis})
+    if (!emojis) {
+      return this.setState({
+        totalPage: 0,
+        emojis: []
       })
     }
+    let totalPage = 1;
+    //update pagination
+    const canDividedBySix = emojis.length % 6 === 0;
+    if (canDividedBySix) {
+      totalPage = emojis.length / 6;
+    }
+    else {
+      totalPage = parseInt(emojis.length / 6) + 1;
+    }
+    this.setState({
+      totalPage,
+      emojis
+    })
   }
 
   getCategory = () => {
@@ -103,13 +112,10 @@ class App extends Component {
     document.body.removeChild(hiddenInput);
     this.setState({
       showNotif: true,
+      notifMessage: `Coppied ${hidden.innerHTML} to clipboard`,
       selectedEmoji: hidden.innerHTML,
     }, () => {
-      setTimeout(() => {
-        this.setState({
-          showNotif: false
-        })
-      }, 1500)
+      this.closeNotif()
     })
   }
 
@@ -130,7 +136,7 @@ class App extends Component {
         category: parentCategory,
         sub: [
           {
-            category: "Joy",
+            category: subCategory,
             emojis: [
               emoji
             ]
@@ -155,15 +161,27 @@ class App extends Component {
             ...emoji
           })
         }
+        else{
+          return this.setState({
+            showNotif: true, 
+            notifMessage: `Already pinned`
+          }, () => this.closeNotif())            
+        }
       }
     }
+    this.setState({
+      showNotif: true, 
+      notifMessage: `Added to pin`
+    }, () => this.closeNotif())
     localStorage.setItem('pin', JSON.stringify(pinned));
   }
 
   closeNotif = () => {
-    this.setState({
-      showNotif: false
-    })
+    setTimeout(() => {
+      this.setState({
+        showNotif: false
+      })
+    }, 1500)
   }
 
   componentDidMount() {
@@ -193,7 +211,7 @@ class App extends Component {
                   name="selected_category"
                   onChange={this.changeCategory}
                 >
-                  <option value=" - " >- Category -</option>
+                  <option value=" - " >- Category -</option>                  
                   {
                     data.map(({ category, sub }) => (
                       <optgroup label={category} key={category}>
@@ -248,8 +266,8 @@ class App extends Component {
             />
           }
           <CopyNotification
-            showNotif={this.state.showNotif}
-            selectedEmoji={this.state.selectedEmoji}
+            showNotif={this.state.showNotif}            
+            message={this.state.notifMessage}
           />
         </section>
       </Fragment>

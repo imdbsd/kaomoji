@@ -1,7 +1,6 @@
 import kaomoji from './kaomoji.json';
 
 const { data } = kaomoji;
-const pinned = JSON.parse(localStorage.getItem('pin'));
 
 const getAllData = () => data;
 
@@ -11,9 +10,8 @@ const getCategory = key => {
   return data.find(({ category }) => category === key);
 }
 
-const getPinnedCategory = key => {
-  console.log({pinned})
-  return pinned.find(({ category }) => category === key);
+const getPinnedCategory = key => {  
+  return getAllPinned().find(({ category }) => category === key);
 }
 
 const subCategory = (parentKey, subKey) => {
