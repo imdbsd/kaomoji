@@ -9,7 +9,7 @@ import FourZeroFour from './styles/404';
 import 'bulma/css/bulma.css';
 
 import kaomojis from './data/kaomoji.json'
-import { getDatas, getAllData, getAllPinned, getPinnedDatas } from './data/provider';
+import { getDatas, getAllData, getAllPinned, getPinnedDatas, storePinned, removePinned } from './data/provider';
 
 class App extends Component {
   state = {
@@ -19,6 +19,9 @@ class App extends Component {
     page: 0,
     totalPage: 0,
     showNotif: false,
+    notifMessage: '',
+    showAlert: false,
+    alertMessage: '',
     emojis: []
   }
 
@@ -33,11 +36,15 @@ class App extends Component {
   }
 
   changeFilter = filter => {
-    if (this.state.filter !== filter) {
-      console.log(!getAllPinned())
+    if (this.state.filter !== filter) {      
       if (filter === 'pinned') {
         if(!getAllPinned()){
-          return null;
+          return this.setState({
+            showAlert: true,
+            alertMessage: 'You have no pinned kaomoji right now'
+          }, () => {
+            setTimeout(() => this.setState({showAlert: false}),1500)
+          });
         }        
       }      
       this.setState({
@@ -47,12 +54,9 @@ class App extends Component {
     }
   }
 
-  updateEmojis = () => {
-    console.log("updateEMojis")
-    const { parentCategory, subCategory } = this.getCategory();
-    console.log({filter: this.state.filter})
-    const { emojis } = this.state.filter === 'all' ? getDatas(parentCategory, subCategory) : getPinnedDatas(parentCategory, subCategory);
-    console.log({emojis})
+  updateEmojis = () => {    
+    const { parentCategory, subCategory } = this.getCategory();    
+    const { emojis } = this.state.filter === 'all' ? getDatas(parentCategory, subCategory) : getPinnedDatas(parentCategory, subCategory);    
     if (!emojis) {
       return this.setState({
         totalPage: 0,
@@ -119,61 +123,42 @@ class App extends Component {
     })
   }
 
-  addToPin = emoji => {
-    const { localStorage } = window;
-    let pinned = localStorage.getItem('pin');
-    if (!pinned) {
-      pinned = [];
-    }
-    else {
-      pinned = JSON.parse(pinned);
-    }
-    // console.log({pinned});
-    const { parentCategory, subCategory } = this.getCategory();
-    const parentCategoryIndex = pinned.findIndex(pin => pin.category === parentCategory);
-    if (parentCategoryIndex === -1) {
-      pinned.push({
-        category: parentCategory,
-        sub: [
-          {
-            category: subCategory,
-            emojis: [
-              emoji
-            ]
-          }
-        ]
-      })
-    }
-    else {
-      const subCategoryIndex = pinned[parentCategoryIndex].sub.findIndex(pin => pin.category === subCategory);
-      if (subCategoryIndex === -1) {
-        pinned[parentCategoryIndex].sub.push({
-          category: subCategory,
-          emojis: [
-            emoji
-          ]
-        })
-      }
-      else {
-        const status = pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.findIndex(pin => pin.emoji === emoji.emoji);
-        if (status === -1) {
-          pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.push({
-            ...emoji
-          })
-        }
-        else{
-          return this.setState({
-            showNotif: true, 
-            notifMessage: `Already pinned`
-          }, () => this.closeNotif())            
-        }
-      }
-    }
+  addToPin = async emoji => {    
+    const { parentCategory, subCategory } = this.getCategory();    
+    const { success:successPinned } = await storePinned(parentCategory, subCategory, emoji);
+    let message = 'Added to pin';
+    console.log({successPinned})
+    if(!successPinned){    
+      message = `Already pinned`;
+    }   
     this.setState({
       showNotif: true, 
-      notifMessage: `Added to pin`
+      notifMessage: message
     }, () => this.closeNotif())
-    localStorage.setItem('pin', JSON.stringify(pinned));
+  }
+
+  removeFromPin = async emoji => {
+    const { parentCategory, subCategory } = this.getCategory();
+    const { success, emojis} = await removePinned(parentCategory, subCategory, emoji);
+    if(success){
+      let totalPage = 1;
+      const canDividedBySix = emojis.length % 6 === 0;
+      if (canDividedBySix) {
+        totalPage = emojis.length / 6;
+      }
+      else {
+        totalPage = parseInt(emojis.length / 6) + 1;
+      }
+      console.log({totalPage})
+      console.log(this.state.page > totalPage - 1)
+      this.setState({
+        showNotif: true, 
+        notifMessage: 'unpinned the emoji',
+        totalPage,
+        page: this.state.page > totalPage - 1 ? totalPage - 1 : this.state.page,
+        emojis
+      }, () => this.closeNotif())
+    }
   }
 
   closeNotif = () => {
@@ -213,7 +198,7 @@ class App extends Component {
                 >
                   <option value=" - " >- Category -</option>                  
                   {
-                    data.map(({ category, sub }) => (
+                    data && data.map(({ category, sub }) => (
                       <optgroup label={category} key={category}>
                         {
                           sub.map(s => (
@@ -250,7 +235,8 @@ class App extends Component {
                     <Card
                       emoji={emoji}
                       copyEmoji={this.copyEmoji}
-                      pinEmoji={this.addToPin}
+                      pinEmojiAction={this.state.filter === 'all' ? this.addToPin : this.removeFromPin}
+                      status={this.state.filter === 'all' ? 'pin' : 'unpin'}
                     />
                   </div>
                 )
@@ -268,6 +254,10 @@ class App extends Component {
           <CopyNotification
             showNotif={this.state.showNotif}            
             message={this.state.notifMessage}
+          />
+          <AlertNotification 
+            showNotif={this.state.showAlert}
+            message={this.state.alertMessage}
           />
         </section>
       </Fragment>
