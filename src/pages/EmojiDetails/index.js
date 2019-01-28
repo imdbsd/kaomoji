@@ -1,0 +1,158 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import {CopyNotification, AlertNotification} from '../../components/Notification';
+import FourZeroFour from '../../styles/404';
+import KaomojiDisplay from '../../styles/KaomojiDisplay';
+
+import { getEmoji, getPinnedDatas, storePinned, removePinned } from '../../data/provider';
+
+class EmojiDetails extends Component {
+  state = {
+    showNotif: false,
+    notifMessage: '',
+    selectedEmoji: '',
+    isPinned: false
+  }
+  closeNotif = () => {
+    setTimeout(() => {
+      this.setState({
+        showNotif: false
+      })
+    }, 1500)
+  }
+  copyEmoji = emoji => {
+    const hidden = document.createElement('textarea');
+    const hiddenInput = document.createElement('input');
+    hidden.innerHTML = emoji;
+    hiddenInput.setAttribute("value", hidden.innerHTML);
+    document.body.appendChild(hiddenInput);
+    hiddenInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(hiddenInput);
+    this.setState({
+      showNotif: true,
+      notifMessage: `Coppied ${hidden.innerHTML} to clipboard`,
+      selectedEmoji: hidden.innerHTML,
+    }, () => {
+      this.closeNotif()
+    })
+  }
+
+  removeFromPin = async emoji => {
+    const confirmUnpin = window.confirm('Unpin this emoji ?');
+    if(!confirmUnpin){
+      return null;
+    }
+    const { parentCategory, subCategory } = this.props.match.params;
+    const { success } = await removePinned(parentCategory, subCategory, emoji);
+    if(success){      
+      this.setState({
+        showNotif: true, 
+        notifMessage: 'unpinned the emoji',
+        isPinned: false        
+      }, () => this.closeNotif())
+    }
+  }
+
+  addToPin = async emoji => {    
+    const { parentCategory, subCategory } = this.props.match.params;
+    const { success:successPinned } = await storePinned(parentCategory, subCategory, emoji);
+    let message = 'Added to pin';
+    console.log({successPinned})
+    if(!successPinned){    
+      message = `Already pinned`;
+    }   
+    this.setState({
+      showNotif: true, 
+      notifMessage: message,
+      isPinned: true
+    }, () => this.closeNotif())
+  }
+
+  componentDidMount(){
+    const { match } = this.props;
+    const emoji = getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index);
+    const pinnedEmojis = getPinnedDatas(match.params.parentCategory, match.params.subCategory);
+
+    if(pinnedEmojis.length === 0){
+      return null;
+    }
+    const emojiIndex = pinnedEmojis.emojis.findIndex(e => e.emoji === emoji.emoji);
+    let isPinned = false;
+    if(emojiIndex !== -1){
+      isPinned = true;
+    }
+    this.setState({
+      isPinned
+    })
+  }  
+
+  render() {
+    const { match } = this.props;
+    const emoji = getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index);
+    return (
+      <section className="section" style={{ margin: '25px auto' }}>
+        <nav className="breadcrumb" aria-label="breadcrumbs">
+          <ul>
+            <li><Link to='/'>Kaomoji</Link></li>
+            <li><span style={{ padding: '0 .75em' }}>{match.params.parentCategory}</span></li>
+            <li><span style={{ padding: '0 .75em' }}>{match.params.subCategory}</span></li>
+            <li class="is-active"><span style={{ pading: '0 .75em' }}>{match.params.index}</span></li>
+          </ul>
+        </nav>
+        <div className="columns is-mobile is-multiline">
+          {
+            !emoji
+            && (
+              <div className="column">
+                <FourZeroFour>
+                  <p className="emoji">
+                    ¯\_(ツ)_/¯
+                    </p>
+                  <p className="emoji__text">HHmmm, what did u want?</p>
+                </FourZeroFour>
+              </div>
+            )
+          }
+          {
+            emoji
+            && (
+              <div className="column" style={{ overflowX: 'scroll', padding: '25px 0' }}>
+                <KaomojiDisplay
+                  dangerouslySetInnerHTML={{ __html: emoji.emoji }}
+                />
+              </div>
+            )
+          }
+        </div>
+        <div className="column">
+          <div className="buttons are-medium">
+            <a 
+              className="button is-fullwidth is-primary"
+              onClick={() => this.copyEmoji(emoji.emoji)}
+            >
+                Copy to clipboard
+            </a>
+            <a 
+              className="button is-fullwidth"
+              onClick={() => {
+                if(this.state.isPinned){
+                  return this.removeFromPin(emoji)
+                }
+                return this.addToPin(emoji)
+              }}
+            >
+              {this.state.isPinned ? 'Unpin' : 'Pin'}
+            </a>
+          </div>
+        </div>
+        <CopyNotification
+            showNotif={this.state.showNotif}            
+            message={this.state.notifMessage}
+          />
+      </section>
+    );
+  }
+}
+
+export default EmojiDetails;

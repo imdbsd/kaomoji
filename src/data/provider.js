@@ -6,11 +6,11 @@ const getAllData = () => data;
 
 const getAllPinned = () => JSON.parse(localStorage.getItem('pin'));
 
-const getCategory = key => {  
+const getCategory = key => {
   return data.find(({ category }) => category === key);
 }
 
-const getPinnedCategory = key => {  
+const getPinnedCategory = key => {
   return getAllPinned().find(({ category }) => category === key);
 }
 
@@ -21,8 +21,8 @@ const subCategory = (parentKey, subKey) => {
 
 const getDatas = (parentKey, subKey) => {
   const parentCategory = getCategory(parentKey);
-  console.log({parentCategory})
-  if(parentCategory === undefined){
+  console.log({ parentCategory })
+  if (parentCategory === undefined) {
     return [];
   }
   return parentCategory.sub.find(({ category }) => category === subKey);
@@ -30,8 +30,8 @@ const getDatas = (parentKey, subKey) => {
 
 const getPinnedDatas = (parentKey, subKey) => {
   const parentCategory = getPinnedCategory(parentKey);
-  console.log({parentCategory})
-  if(parentCategory === undefined){
+  console.log({ parentCategory })
+  if (parentCategory === undefined) {
     return [];
   }
   return parentCategory.sub.find(({ category }) => category === subKey);
@@ -78,8 +78,8 @@ const storePinned = (parentCategory, subCategory, emoji) => {
             ...emoji
           })
         }
-        else{
-          return resolve({success: true})
+        else {
+          return resolve({ success: true })
         }
       }
     }
@@ -90,12 +90,28 @@ const storePinned = (parentCategory, subCategory, emoji) => {
   })
 }
 
+const getEmoji = (parentCategory, subCategory, index) => {
+  const parentCategoryIndex = data.findIndex(pin => pin.category === parentCategory);
+  if (parentCategory === -1) {
+    return null;
+  }
+  const subCategoryIndex = data[parentCategoryIndex].sub.findIndex(pin => pin.category === subCategory);
+  if (subCategoryIndex === -1) {
+    return null;
+  }
+  const emoji = data[parentCategoryIndex].sub[subCategoryIndex].emojis[index];
+  if (!emoji) {
+    return null;
+  }
+  return emoji;
+}
+
 const removePinned = (parentCategory, subCategory, emoji) => {
   return new Promise((resolve, reject) => {
     const { localStorage } = window;
     let pinned = localStorage.getItem('pin');
     if (!pinned) {
-      return resolve({success: false});
+      return resolve({ success: false });
     }
     else {
       pinned = JSON.parse(pinned);
@@ -103,16 +119,16 @@ const removePinned = (parentCategory, subCategory, emoji) => {
     const parentCategoryIndex = pinned.findIndex(pin => pin.category === parentCategory);
     const subCategoryIndex = pinned[parentCategoryIndex].sub.findIndex(pin => pin.category === subCategory);
     const emojiIndex = pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.findIndex(pin => pin.emoji === emoji.emoji);
-    if(emojiIndex === -1){
-      return resolve({success: false});
+    if (emojiIndex === -1) {
+      return resolve({ success: false });
     }
-    if(emojiIndex === 1){
+    if (emojiIndex === 1) {
       pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.shift();
     }
-    else if(emojiIndex === pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.length - 1){
+    else if (emojiIndex === pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.length - 1) {
       pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.pop();
     }
-    else{
+    else {
       const frontArr = pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.slice(0, emojiIndex);
       const backArr = pinned[parentCategoryIndex].sub[subCategoryIndex].emojis.slice(emojiIndex + 1);
       pinned[parentCategoryIndex].sub[subCategoryIndex].emojis = [...frontArr, ...backArr];
@@ -132,6 +148,7 @@ export {
   getAllData,
   getAllPinned,
   getPinnedDatas,
+  getEmoji,
   storePinned,
   removePinned
 }

@@ -1,17 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import Header from './components/Header';
-import Card from './components/Card';
-import Pagination from './components/Pagination';
-import {CopyNotification, AlertNotification} from './components/Notification';
-import Tabs from './components/Tabs';
-import FourZeroFour from './styles/404';
+import Card from '../components/Card';
+import Pagination from '../components/Pagination';
+import {CopyNotification, AlertNotification} from '../components/Notification';
+import Tabs from '../components/Tabs';
+import FourZeroFour from '../styles/404';
 
 import 'bulma/css/bulma.css';
 
-import kaomojis from './data/kaomoji.json'
-import { getDatas, getAllData, getAllPinned, getPinnedDatas, storePinned, removePinned } from './data/provider';
+import { getDatas, getAllData, getAllPinned, getPinnedDatas, storePinned, removePinned } from '../data/provider';
 
-class App extends Component {
+class Home extends Component {
   state = {
     selected_category: ' - ',
     selectedEmoji: '',
@@ -179,8 +177,7 @@ class App extends Component {
   render() {
     const data = this.state.filter === 'all' ? getAllData() : getAllPinned()
     return (
-      <Fragment>
-        <Header />
+      <Fragment>        
         <section className="section">
           <Tabs
             filter={this.state.filter}
@@ -229,12 +226,15 @@ class App extends Component {
               )
             }
             {
-              this.state.emojis.length > 0 && this.state.emojis.slice((this.state.page * 6), (this.state.page * 6) + 6).map(emoji => {
+              this.state.emojis.length > 0 && this.state.emojis.slice((this.state.page * 6), (this.state.page * 6) + 6).map((emoji, index) => {
                 return (
                   <div className="column is-half" key={emoji.emoji}>
                     <Card
                       emoji={emoji}
+                      category={this.state.selected_category}
+                      index={index + 6 * this.state.page}
                       copyEmoji={this.copyEmoji}
+                      filter={this.state.filter}
                       pinEmojiAction={this.state.filter === 'all' ? this.addToPin : this.removeFromPin}
                       status={this.state.filter === 'all' ? 'pin' : 'unpin'}
                     />
@@ -265,4 +265,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;
