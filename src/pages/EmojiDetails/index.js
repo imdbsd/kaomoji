@@ -4,10 +4,11 @@ import {CopyNotification, AlertNotification} from '../../components/Notification
 import FourZeroFour from '../../styles/404';
 import KaomojiDisplay from '../../styles/KaomojiDisplay';
 
-import { getEmoji, getPinnedDatas, storePinned, removePinned } from '../../data/provider';
+import { getEmoji, getPinnedDatas, getPinnedEmoji, storePinned, removePinned } from '../../data/provider';
 
 class EmojiDetails extends Component {
   state = {
+    emoji: '',
     showNotif: false,
     notifMessage: '',
     selectedEmoji: '',
@@ -71,25 +72,27 @@ class EmojiDetails extends Component {
 
   componentDidMount(){
     const { match } = this.props;
-    const emoji = getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index);
-    const pinnedEmojis = getPinnedDatas(match.params.parentCategory, match.params.subCategory);
-
-    if(pinnedEmojis.length === 0){
-      return null;
-    }
-    const emojiIndex = pinnedEmojis.emojis.findIndex(e => e.emoji === emoji.emoji);
+    const emoji = match.params.filter === 'all' ? getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index) : getPinnedEmoji(match.params.parentCategory, match.params.subCategory, match.params.index)    
     let isPinned = false;
-    if(emojiIndex !== -1){
-      isPinned = true;
-    }
+    if(match.params.filter === 'pinned') {
+      const pinnedEmojis = getPinnedDatas(match.params.parentCategory, match.params.subCategory);
+      if(pinnedEmojis.length === 0){
+        return null;
+      }
+      const emojiIndex = pinnedEmojis.emojis.findIndex(e => e.emoji === emoji.emoji);      
+      if(emojiIndex !== -1){
+        isPinned = true;
+      }
+    }    
     this.setState({
-      isPinned
+      isPinned,
+      emoji
     })
   }  
 
   render() {
     const { match } = this.props;
-    const emoji = getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index);
+    const { emoji } = this.state;    
     return (
       <section className="section" style={{ margin: '25px auto' }}>
         <nav className="breadcrumb" aria-label="breadcrumbs">

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './main.css';
 import Header from './components/Header';
 import Home from './pages/Home';
+import Footer from './styles/Footer';
 import EmojiDetails from './pages/EmojiDetails';
 import * as serviceWorker from './serviceWorker';
 
@@ -15,6 +16,9 @@ class Index extends React.Component{
           <Header />
           <Route path="/" exact component={Home} />  
           <Route path="/:filter/:parentCategory/:subCategory/:index" component={EmojiDetails} />
+          <Footer>
+            Develop with &nbsp;<span>&#10084;</span>&nbsp; by &nbsp;<a href="https://twitter.com/Budisuryadarma" target="_blank" title="imdbsd twitter link">imdbsd</a>
+          </Footer>
         </React.Fragment>        
       </Router>
     )

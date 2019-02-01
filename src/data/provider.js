@@ -34,7 +34,19 @@ const getPinnedDatas = (parentKey, subKey) => {
   if (parentCategory === undefined) {
     return [];
   }
-  return parentCategory.sub.find(({ category }) => category === subKey);
+  const subCategory = parentCategory.sub.find(({ category }) => category === subKey);
+  if(subCategory === undefined){
+    return [];
+  }
+  return subCategory;
+}
+
+const getPinnedEmoji = (parentKey, subKey, index) => {
+  const { emojis } = getPinnedDatas(parentKey, subKey);
+  if(!emojis){
+    return null;
+  }
+  return emojis[index];
 }
 
 const storePinned = (parentCategory, subCategory, emoji) => {
@@ -148,6 +160,7 @@ export {
   getAllData,
   getAllPinned,
   getPinnedDatas,
+  getPinnedEmoji,
   getEmoji,
   storePinned,
   removePinned
