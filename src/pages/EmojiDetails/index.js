@@ -120,7 +120,7 @@ class EmojiDetails extends Component {
           {
             emoji
             && (
-              <div className="column" style={{ overflowX: 'scroll', padding: '25px 0' }}>
+              <div className="column" style={{padding: '25px 0' }}>
                 <KaomojiDisplay
                   dangerouslySetInnerHTML={{ __html: emoji.emoji }}
                 />

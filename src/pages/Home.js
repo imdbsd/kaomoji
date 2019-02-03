@@ -176,6 +176,7 @@ class Home extends Component {
 
   render() {
     const data = this.state.filter === 'all' ? getAllData() : getAllPinned()
+    console.log({data})
     return (
       <Fragment>        
         <section className="section">

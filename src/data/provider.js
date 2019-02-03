@@ -1,4 +1,4 @@
-import kaomoji from './kaomoji.json';
+import kaomoji from './kaomojis';
 
 const { data } = kaomoji;
 
