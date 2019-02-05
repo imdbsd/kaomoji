@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import KaomojiButton from '../../styles/KaomojiButton';
 
 const Card = props => {
-  const {emoji, source,} = props.emoji
+  const { emoji } = props.emoji
   const { copyEmoji, pinEmojiAction, status, filter} = props;
   const [parentCategory, subCategory] = props.category.split("-");
   const pinButton = () => {
@@ -30,10 +30,11 @@ const Card = props => {
         <Link to={{
           pathname: `/${filter}/${parentCategory}/${subCategory}/${props.index}`,
           state: {
-            from: 'pinned'
+            from: 'pinned',
+            current: props.current
           }
           }} className="card-footer-item">detail</Link>
-        <a className="card-footer-item" onClick={pinButton}>{status}</a>
+        <button className="card-footer-item" onClick={pinButton} style={{border: 'none', backgroundColor: 'white', color: '#3273dc'}}>{status}</button>
       </footer>
     </div>
   )

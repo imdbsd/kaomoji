@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PaginationStyle from '../../styles/Pagination';
 const Pagination = props => {
   const {
     currentPage,
@@ -11,11 +11,11 @@ const Pagination = props => {
       <p>Page: {currentPage} / {totalPage}</p>
       {totalPage !== 1 
       && (
-        <nav className="pagination is-centered" role="navigation" aria-label="pagination">
-          <a className="pagination-previous" onClick={() => handlePagination('down')}
-          >&lt;</a>
-          <a className="pagination-next" onClick={() => handlePagination('up')}>&gt;</a>
-        </nav>
+        <PaginationStyle className="pagination is-centered" role="navigation" aria-label="pagination">
+          <button className="pagination-previous" href="#" onClick={() => handlePagination('down')}
+          >&lt;</button>
+          <button className="pagination-next" onClick={() => handlePagination('up')}>&gt;</button>
+        </PaginationStyle>
       )
       }
     </React.Fragment>

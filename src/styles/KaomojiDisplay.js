@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-const KaomojiDisplay = styled.p`
-  font-size: 32px;
-  overflow-x: scroll;
-  max-width: 100%;
+const KaomojiDisplay = styled.div`
+  font-size: 1.4em;
+  overflow-x: scroll;  
   padding: 25px 0;
   text-align: center;  
 `;

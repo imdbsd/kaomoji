@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CopyNotification = ({ showNotif, message }) => (
-  <div class={`notification is-success ${showNotif ? 'notif__up' : ''}`}>
+  <div className={`notification is-success ${showNotif ? 'notif__up' : ''}`}>
     {message}
   </div>
 )

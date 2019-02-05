@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Header from '../components/Header';
 import Card from '../components/Card';
 import Pagination from '../components/Pagination';
 import {CopyNotification, AlertNotification} from '../components/Notification';
@@ -168,17 +169,26 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { localStorage } = window;
-    console.log({
-      pin: localStorage.getItem('pin')
-    })
+    if(this.props.location.state) {
+      if(this.props.location.state.current) {
+        const { current } = this.props.location.state;
+        this.setState({
+          selected_category: current.selected_category,
+          page: current.page,
+          filter: current.filter
+        }, () => this.updateEmojis())
+      }
+    }
   }
 
   render() {
     const data = this.state.filter === 'all' ? getAllData() : getAllPinned()
     console.log({data})
     return (
-      <Fragment>        
+      <Fragment>
+        <Header          
+          pathname={this.props.location.pathname}
+        />        
         <section className="section">
           <Tabs
             filter={this.state.filter}
@@ -238,6 +248,11 @@ class Home extends Component {
                       filter={this.state.filter}
                       pinEmojiAction={this.state.filter === 'all' ? this.addToPin : this.removeFromPin}
                       status={this.state.filter === 'all' ? 'pin' : 'unpin'}
+                      current={{
+                        selected_category: this.state.selected_category,
+                        page: this.state.page,
+                        filter: this.state.filter
+                      }}
                     />
                   </div>
                 )

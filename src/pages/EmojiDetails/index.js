@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {CopyNotification, AlertNotification} from '../../components/Notification';
+import Header from '../../components/Header';
+import { CopyNotification } from '../../components/Notification';
 import FourZeroFour from '../../styles/404';
 import KaomojiDisplay from '../../styles/KaomojiDisplay';
 
@@ -41,119 +42,132 @@ class EmojiDetails extends Component {
 
   removeFromPin = async emoji => {
     const confirmUnpin = window.confirm('Unpin this emoji ?');
-    if(!confirmUnpin){
+    if (!confirmUnpin) {
       return null;
     }
     const { parentCategory, subCategory } = this.props.match.params;
     const { success } = await removePinned(parentCategory, subCategory, emoji);
-    if(success){      
+    if (success) {
       this.setState({
-        showNotif: true, 
+        showNotif: true,
         notifMessage: 'unpinned the emoji',
-        isPinned: false        
+        isPinned: false
       }, () => this.closeNotif())
     }
   }
 
-  addToPin = async emoji => {    
+  addToPin = async emoji => {
     const { parentCategory, subCategory } = this.props.match.params;
-    const { success:successPinned } = await storePinned(parentCategory, subCategory, emoji);
+    const { success: successPinned } = await storePinned(parentCategory, subCategory, emoji);
     let message = 'Added to pin';
-    console.log({successPinned})
-    if(!successPinned){    
+    console.log({ successPinned })
+    if (!successPinned) {
       message = `Already pinned`;
-    }   
+    }
     this.setState({
-      showNotif: true, 
+      showNotif: true,
       notifMessage: message,
       isPinned: true
     }, () => this.closeNotif())
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { match } = this.props;
-    const emoji = match.params.filter === 'all' ? getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index) : getPinnedEmoji(match.params.parentCategory, match.params.subCategory, match.params.index)    
+    const emoji = match.params.filter === 'all' ? getEmoji(match.params.parentCategory, match.params.subCategory, match.params.index) : getPinnedEmoji(match.params.parentCategory, match.params.subCategory, match.params.index)
     let isPinned = false;
-    if(match.params.filter === 'pinned') {
+    if (match.params.filter === 'pinned') {
       const pinnedEmojis = getPinnedDatas(match.params.parentCategory, match.params.subCategory);
-      if(pinnedEmojis.length === 0){
+      if (pinnedEmojis.length === 0) {
         return null;
       }
-      const emojiIndex = pinnedEmojis.emojis.findIndex(e => e.emoji === emoji.emoji);      
-      if(emojiIndex !== -1){
+      const emojiIndex = pinnedEmojis.emojis.findIndex(e => e.emoji === emoji.emoji);
+      if (emojiIndex !== -1) {
         isPinned = true;
       }
-    }    
+    }
     this.setState({
       isPinned,
       emoji
     })
-  }  
+  }
 
   render() {
     const { match } = this.props;
-    const { emoji } = this.state;    
+    const { emoji } = this.state;
     return (
-      <section className="section" style={{ margin: '25px auto' }}>
-        <nav className="breadcrumb" aria-label="breadcrumbs">
-          <ul>
-            <li><Link to='/'>Kaomoji</Link></li>
-            <li><span style={{ padding: '0 .75em' }}>{match.params.parentCategory}</span></li>
-            <li><span style={{ padding: '0 .75em' }}>{match.params.subCategory}</span></li>
-            <li class="is-active"><span style={{ pading: '0 .75em' }}>{match.params.index}</span></li>
-          </ul>
-        </nav>
-        <div className="columns is-mobile is-multiline">
-          {
-            !emoji
-            && (
-              <div className="column">
-                <FourZeroFour>
-                  <p className="emoji">
-                    ¯\_(ツ)_/¯
+      <React.Fragment>
+        <Header           
+          pathname={this.props.location.pathname}
+          current={this.props.location.state.current}
+        />
+        <section className="section" style={{ margin: '25px auto' }}>
+          <nav className="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+              <li><Link to='/'>Kaomoji</Link></li>
+              <li><span style={{ padding: '0 .75em' }}>{match.params.parentCategory}</span></li>
+              <li><span style={{ padding: '0 .75em' }}>{match.params.subCategory}</span></li>
+              <li className="is-active"><span style={{ pading: '0 .75em' }}>{match.params.index}</span></li>
+            </ul>
+          </nav>
+          <div className="columns is-mobile is-multiline">
+            {
+              !emoji
+              && (
+                <div className="column">
+                  <FourZeroFour>
+                    <p className="emoji">
+                      ¯\_(ツ)_/¯
                     </p>
-                  <p className="emoji__text">HHmmm, what did u want?</p>
-                </FourZeroFour>
-              </div>
-            )
-          }
+                    <p className="emoji__text">Feeling lost ?</p>
+                  </FourZeroFour>
+                </div>
+              )
+            }
+            {
+              emoji
+              && (
+                <div className="column" style={{ padding: '25px 0' }}>
+                  <KaomojiDisplay
+                    dangerouslySetInnerHTML={{ __html: emoji.emoji }}
+                  />
+                </div>
+              )
+            }
+          </div>
           {
             emoji
             && (
-              <div className="column" style={{padding: '25px 0' }}>
-                <KaomojiDisplay
-                  dangerouslySetInnerHTML={{ __html: emoji.emoji }}
+              <React.Fragment>
+                <div className="column">
+                  <div className="buttons are-medium">
+                    <button
+                      className="button is-fullwidth is-primary"
+                      onClick={() => this.copyEmoji(emoji.emoji)}
+                    >
+                      Copy to clipboard
+                  </button>
+                    <button
+                      className="button is-fullwidth"
+                      onClick={() => {
+                        if (this.state.isPinned) {
+                          return this.removeFromPin(emoji)
+                        }
+                        return this.addToPin(emoji)
+                      }}
+                    >
+                      {this.state.isPinned ? 'Unpin' : 'Pin'}
+                    </button>
+                  </div>
+                </div>
+                <CopyNotification
+                  showNotif={this.state.showNotif}
+                  message={this.state.notifMessage}
                 />
-              </div>
+              </React.Fragment>
             )
           }
-        </div>
-        <div className="column">
-          <div className="buttons are-medium">
-            <a 
-              className="button is-fullwidth is-primary"
-              onClick={() => this.copyEmoji(emoji.emoji)}
-            >
-                Copy to clipboard
-            </a>
-            <a 
-              className="button is-fullwidth"
-              onClick={() => {
-                if(this.state.isPinned){
-                  return this.removeFromPin(emoji)
-                }
-                return this.addToPin(emoji)
-              }}
-            >
-              {this.state.isPinned ? 'Unpin' : 'Pin'}
-            </a>
-          </div>
-        </div>
-        <CopyNotification
-            showNotif={this.state.showNotif}            
-            message={this.state.notifMessage}
-          />
-      </section>
+        </section>
+      </React.Fragment>
     );
   }
 }

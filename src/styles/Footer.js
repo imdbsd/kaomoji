@@ -7,6 +7,10 @@ const Footer = styled.footer`
   span {
     color: red;
   }
+  a {
+    color: red;
+    font-weight: bold;
+  }
 `;
 
 export default Footer;

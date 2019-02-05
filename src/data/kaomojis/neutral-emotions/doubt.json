@@ -1,56 +1,44 @@
 {
-  "category": "Anger",
+  "category": "Doubt",
   "emojis": [
     {
-      "emoji": "(&#x3065;&#xffe3; &#xb3;&#xffe3;)&#x3065;",
+      "emoji": "(&#xffe2;_&#xffe2;)",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x3064;&#x2267;&#x25bd;&#x2266;)&#x3064;",
+      "emoji": "(&#x2192;_&#x2192;)",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x3064;&#x2727;&#x3c9;&#x2727;)&#x3064;",
+      "emoji": "(&#xffe2; &#xffe2;)",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x3065; &#x25d5;&#x203f;&#x25d5; )&#x3065;",
+      "emoji": "(&#xffe2;&#x203f;&#xffe2; )",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x2283;&#xff61;&#x2022;&#x301;&#x203f;&#x2022;&#x300;&#xff61;)&#x2283;",
+      "emoji": "(&#xac;_&#xac; )",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x3064; . &#x2022;&#x301; _&#x296; &#x2022;&#x300; .)&#x3064;",
+      "emoji": "(&#x2190;_&#x2190;)",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x3063;&#xca0;&#x203f;&#xca0;)&#x3063;",
+      "emoji": "(&#xac; &#xac; )",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "(&#x3065;&#x25e1;&#xfe4f;&#x25e1;)&#x3065;",
+      "emoji": "(&#xac;&#x203f;&#xac; )",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "&#x2282;(&#xb4;&#x2022; &#x3c9; &#x2022;`&#x2282;)",
+      "emoji": "(&#x21bc;_&#x21bc;)",
       "source": "kaomoji.ru"
     },
     {
-      "emoji": "&#x2282;(&#xff65;&#x3c9;&#xff65;*&#x2282;)",
-      "source": "kaomoji.ru"
-    },
-    {
-      "emoji": "&#x2282;(&#xffe3;&#x25bd;&#xffe3;)&#x2283;",
-      "source": "kaomoji.ru"
-    },
-    {
-      "emoji": "&#x2282;( &#xb4; &#x25bd; ` )&#x2283;",
-      "source": "kaomoji.ru"
-    },
-    {
-      "emoji": "( ~*-*)~",
+      "emoji": "(&#x21c0;_&#x21c0;)",
       "source": "kaomoji.ru"
     }
   ]
