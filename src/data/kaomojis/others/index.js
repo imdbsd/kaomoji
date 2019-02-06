@@ -8,8 +8,8 @@ import music from './music.json';
 import weapons from './weapons.json';
 
 const others = {
-    category: "Others",
-    sub: [enemies, faces, food, friends, games, magic, music, weapons]
-}
+  category: 'Others',
+  sub: [enemies, faces, food, friends, games, magic, music, weapons]
+};
 
 export default others;
