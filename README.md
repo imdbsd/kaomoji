@@ -1,6 +1,6 @@
 ![Kaomoji Screenshoot](./screenshoot/kaomoji-images.jpg)
 
-# KAOMOJI [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)]
+# KAOMOJI ![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
 
 > Kaomoji (顔文字) is a popular Japanese emoticon style made up of Japanese characters and grammar punctuations, and are used to express emotion in texting and cyber communication. The word kaomoji is also synonymous to be referred to as Japanese emoticons. This concept is formed by the combination of two words in Kanji, “kao” (顔 – “face”) and “moji” (文字 – “character”).
 
