@@ -22,8 +22,13 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "husky": {
+   "hooks": {
+     "pre-commit": "lint-staged"
+   }
+ },
   "lint-staged": {
-    "*.{js,md}": [
+    "*.{js}": [
       "prettier --write",
       "git add"
     ]
