@@ -4,8 +4,8 @@ import indifference from './indifference.json';
 import surprise from './surprise.json';
 
 const neutralEmotions = {
-    category: "Neutral Emotions",
-    sub: [confusion, doubt, indifference, surprise]
+  category: 'Neutral Emotions',
+  sub: [confusion, doubt, indifference, surprise]
 };
 
 export default neutralEmotions;

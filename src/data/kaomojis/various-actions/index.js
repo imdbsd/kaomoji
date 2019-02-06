@@ -8,10 +8,19 @@ import writing from './writing.json';
 import running from './running.json';
 import sleeping from './sleeping.json';
 
-
 const variousActions = {
-    category: "Various Actions",
-    sub: [apologizing, greeting, hiding, hugging, nosebleeding, running, sleeping, winking, writing]
+  category: 'Various Actions',
+  sub: [
+    apologizing,
+    greeting,
+    hiding,
+    hugging,
+    nosebleeding,
+    running,
+    sleeping,
+    winking,
+    writing
+  ]
 };
 
 export default variousActions;

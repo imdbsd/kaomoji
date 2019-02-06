@@ -8,7 +8,7 @@ import rabbit from './rabbit.json';
 import spider from './spider.json';
 
 const animals = {
-  category: "Animals",
+  category: 'Animals',
   sub: [dog, bear, bird, cat, fish, pig, rabbit, spider]
 };
 

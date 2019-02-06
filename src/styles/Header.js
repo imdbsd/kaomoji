@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Header = styled.nav`
-  font-family: "Pacifico", cursive;
+  font-family: 'Pacifico', cursive;
   display: flex;
   font-size: 24px;
   justify-content: center;
