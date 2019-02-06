@@ -9,7 +9,7 @@ const CopyNotification = ({ showNotif, message }) => (
 
 const AlertNotification = ({showNotif, message}) => (
   <div className={`notification is-danger ${showNotif ? 'notif__up' : ''}`}>    
-    {message}
+  {message}
   </div>
 )
 
