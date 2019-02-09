@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/kaomoji/static/css/1.a5091fe6.chunk.css"
   },
   {
-    "revision": "01ad7e57efcbf39b36d59c87bb560f47",
+    "revision": "f34e2b03eb992027be3e5f1e723b4bdc",
     "url": "/kaomoji/index.html"
   }
 ];
