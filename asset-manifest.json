@@ -1,7 +1,7 @@
 {
   "main.css": "/kaomoji/static/css/main.b967e9d4.chunk.css",
-  "main.js": "/kaomoji/static/js/main.3110e351.chunk.js",
-  "main.js.map": "/kaomoji/static/js/main.3110e351.chunk.js.map",
+  "main.js": "/kaomoji/static/js/main.3337bc56.chunk.js",
+  "main.js.map": "/kaomoji/static/js/main.3337bc56.chunk.js.map",
   "static/css/1.a5091fe6.chunk.css": "/kaomoji/static/css/1.a5091fe6.chunk.css",
   "static/js/1.db0cc425.chunk.js": "/kaomoji/static/js/1.db0cc425.chunk.js",
   "static/js/1.db0cc425.chunk.js.map": "/kaomoji/static/js/1.db0cc425.chunk.js.map",
@@ -11,6 +11,6 @@
   "static/media/left-arrow.42e1ecdc.svg": "/kaomoji/static/media/left-arrow.42e1ecdc.svg",
   "static/css/main.b967e9d4.chunk.css.map": "/kaomoji/static/css/main.b967e9d4.chunk.css.map",
   "index.html": "/kaomoji/index.html",
-  "precache-manifest.101ca1d45ed46dc2acc1f6fe46ff93a2.js": "/kaomoji/precache-manifest.101ca1d45ed46dc2acc1f6fe46ff93a2.js",
+  "precache-manifest.caa21ed91a677dacb13a4e3fc75ef67d.js": "/kaomoji/precache-manifest.caa21ed91a677dacb13a4e3fc75ef67d.js",
   "service-worker.js": "/kaomoji/service-worker.js"
 }
