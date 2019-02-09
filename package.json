@@ -1,7 +1,8 @@
 {
   "name": "ele-kaomoji",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "homepage": "https://imdbsd.github.io/kaomoji",
   "dependencies": {
     "bulma": "^0.7.2",
     "husky": "^1.3.1",
@@ -14,6 +15,8 @@
     "styled-components": "^4.1.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -26,7 +29,7 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
- },
+  },
   "lint-staged": {
     "*.js": [
       "prettier --write",
@@ -38,5 +41,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
 }
